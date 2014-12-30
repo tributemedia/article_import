@@ -94,6 +94,4 @@ function article_import_client_cron() {
   }
   return " ";
 }
-
-
 ?>
