@@ -26,10 +26,14 @@ function article_import_client_cron() {
   }
 
   $serverURL = 'http://publisher.tributemedia.com/';
-  $content = file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=done');
+ // $content = file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=done');
+ $content = file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=done');
 
+  
   $content = drupal_json_decode($content);
 
+
+  
   foreach($content as $data) {
     $title = $data['title'];
     $url_path = $data['url_path'];
@@ -80,18 +84,18 @@ function article_import_client_cron() {
     }
     $node->field_meta_description['und'][0]['metatags_quick'] = $description;
     $node->field_meta_keywords['und'][0]['metatags_quick'] = $keywords;
-    //Body field type 1
     $node->field_body['und'][0]['value'] = $content;
     $node->field_body['und'][0]['format'] = 'full_html';
-    //Body field type 2
     $node->body['und'][0]['format'] = 'full_html';
     $node->body['und'][0]['safe_value'] = $content;
     $node->body['und'][0]['value'] = $content;
-    //Image Field
     $node->field_image['und'][0]['fid'] = $file->fid;
+    $node->field_image['und'][0]['alt'] = $keywords;
     
     node_save($node);
   }
   return " ";
 }
+
+
 ?>
