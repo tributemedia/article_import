@@ -11,7 +11,7 @@ function article_import_client_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
     return $items;
-}
+} 
 //Replace the function name with below to manually run from admin/config/system/article_import
 //function article_import_client_check() {
 function article_import_client_cron() {
@@ -26,12 +26,10 @@ function article_import_client_cron() {
   }
 
   $serverURL = 'http://publisher.tributemedia.com/';
- // $content = file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=done');
+ //$serverURL = 'http://dev-publishertributemediacom.pantheon.io/';
  $content = file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=done');
 
-  
-  $content = drupal_json_decode($content);
-
+ $content = drupal_json_decode($content);
 
   
   foreach($content as $data) {
@@ -93,8 +91,16 @@ function article_import_client_cron() {
     $node->field_image['und'][0]['alt'] = $keywords;
     
     node_save($node);
+    $newNID = $node->nid;
+    $title = urlencode($title);
+    if($newNID) {
+      file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=log&message=success&title='.$title);
+    } else {
+      file_get_contents($serverURL.'get_articles?domain='.$site_domain.'&action=log&message=failed&title='.$title);
+    }
+    
   }
-  return " ";
+  return $content;
 }
 
 
