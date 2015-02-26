@@ -3,6 +3,7 @@ description = Tribute Media Article CLIENT Import script client side module.
 core = 7.x
 version = 1.2
 package = TM Article Import
+project status url = 'https://github.com/tributemedia/article_import'
 erus[plugin] = github.com
 erus[account] = tributemedia
 erus[project] = article_import
